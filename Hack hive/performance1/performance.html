@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Performance Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #a70000da;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #ddd;
+            margin: 10px 0;
+            background-color: #f5f5f5;
+        }
+
+        .nav-tabs button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin: 0 5px;
+            color: #3d19e2;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .nav-tabs button.active {
+            border-bottom-color: #4147f3ca;
+            color: #1a73e8;
+            font-weight: bold;
+        }
+
+        .report-card {
+            padding: 20px;
+        }
+
+        .report-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+
+        .obtained-marks {
+            color: #d32f2f;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Transitions for FA-1, FA-2, FA-3, and Overall tabs */
+        #FA-1.active, #FA-2.active, #FA-3.active, #overall.active {
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Overall Performance Section */
+        .overall-performance {
+            padding: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .tab-content.active .overall-performance {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .overall-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .pie-charts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .chart-container {
+            margin: 0;
+            max-width: 100%;
+            height: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        @media (max-width: 600px) {
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 8px;
+            }
+            .nav-tabs button {
+                padding: 8px 15px;
+            }
+            .pie-charts {
+                grid-template-columns: 1fr; /* Stack vertically on small screens */
+                gap: 10px;
+            }
+            .chart-container {
+                height: 200px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Performance</h2>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="active" onclick="showTab('FA-1')">FA-1</button>
+            <button onclick="showTab('FA-2')">FA-2</button>
+            <button onclick="showTab('FA-3')">FA-3</button>
+            <button onclick="showTab('overall')">Overall</button>
+        </div>
+
+        <div class="report-card">
+            <div id="FA-1" class="tab-content active">
+                <h3 class="report-title">FA-1 REPORT CARD</h3>
+                <h4>Academic Year: 2024-25</h4>
+
+                <h4>Part A</h4>
+                <table>
+                    <tr>
+                        <th>Subject Name</th>
+                        <th>FA-1 (20)</th>
+                    </tr>
+                    <tr>
+                        <td>English</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>Kannada</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>Hindi</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>Science</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>Social Science</td>
+                        <td>14</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Obtained Marks</td>
+                        <td class="obtained-marks">86</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Marks</td>
+                        <td>120</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="FA-2" class="tab-content">
+                <h3 class="report-title">FA-2 REPORT CARD</h3>
+                <h4>Academic Year: 2024-25</h4>
+
+                <h4>Part A</h4>
+                <table>
+                    <tr>
+                        <th>Subject Name</th>
+                        <th>FA-2 (20)</th>
+                    </tr>
+                    <tr>
+                        <td>English</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>Kannada</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>Hindi</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td>Science</td>
+                        <td>13</td>
+                    </tr>
+                    <tr>
+                        <td>Social Science</td>
+                        <td>15</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Obtained Marks</td>
+                        <td class="obtained-marks">92</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Marks</td>
+                        <td>120</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="FA-3" class="tab-content">
+                <h3 class="report-title">FA-3 REPORT CARD</h3>
+                <h4>Academic Year: 2024-25</h4>
+
+                <h4>Part A</h4>
+                <table>
+                    <tr>
+                        <th>Subject Name</th>
+                        <th>FA-3 (20)</th>
+                    </tr>
+                    <tr>
+                        <td>English</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>Kannada</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>Hindi</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>Science</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>Social Science</td>
+                        <td>16</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Obtained Marks</td>
+                        <td class="obtained-marks">97</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Marks</td>
+                        <td>120</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="overall" class="tab-content">
+                <div class="overall-performance">
+                    <h3 class="overall-title">Overall Performance</h3>
+                    <h4>Academic Year: 2024-25</h4>
+                    <div class="pie-charts">
+                        <!-- Row 1: Three subjects -->
+                        <div class="chart-container">
+                            <canvas id="englishChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="kannadaChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="hindiChart"></canvas>
+                        </div>
+                        <!-- Row 2: Three subjects -->
+                        <div class="chart-container">
+                            <canvas id="mathChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="scienceChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="socialChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>DATE: 20-02-2025</p>
+            <p>©2023-24 SchoolPhins The Wings of an Education</p>
+        </div>
+    </div>
+
+    <script>
+        let performanceChart;
+
+        function showTab(tabName) {
+            const tabs = document.getElementsByClassName('tab-content');
+            for (let tab of tabs) {
+                tab.classList.remove('active');
+            }
+            document.getElementById(tabName).classList.add('active');
+
+            const buttons = document.getElementsByTagName('button');
+            for (let button of buttons) {
+                button.classList.remove('active');
+            }
+            event.target.classList.add('active');
+
+            // If switching to the "Overall" tab, reset and reanimate the pie charts
+            if (tabName === 'overall') {
+                resetAndAnimatePieCharts();
+            }
+        }
+
+        // Function to reset and reanimate pie charts
+        function resetAndAnimatePieCharts() {
+            // Destroy existing charts if they exist
+            if (window.pieCharts) {
+                window.pieCharts.forEach(chart => chart.destroy());
+            }
+
+            // Recreate and animate each pie chart
+            window.pieCharts = [
+                createPieChart('englishChart', 'English', 20, 'English'),
+                createPieChart('kannadaChart', 'Kannada', 15, 'Kannada'),
+                createPieChart('hindiChart', 'Hindi', 16, 'Hindi'),
+                createPieChart('mathChart', 'Mathematics', 18, 'Mathematics'),
+                createPieChart('scienceChart', 'Science', 13, 'Science'),
+                createPieChart('socialChart', 'Social Science', 15, 'Social Science')
+            ];
+        }
+
+        // Function to create a pie chart with clockwise flowing blue color
+        function createPieChart(canvasId, label, data, title) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            let chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Obtained', 'Remaining'],
+                    datasets: [{
+                        data: [0, 20], // Start with 0 obtained marks for animation
+                        backgroundColor: ['#36A2EB', '#e0e0e0'] // Blue for obtained, gray for remaining
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: title,
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 4000, // Slower animation for flowing effect
+                        easing: 'quacubic-bezier', // Linear easing for consistent clockwise flow
+                        animateRotate: true, // Enable rotation animation for clockwise flow
+                        onComplete: function() {
+                            // Update data to final values after animation
+                            chart.data.datasets[0].data = [data, 20 - data];
+                            chart.update();
+                        }
+                    },
+                    rotation: 360, // Start from the top (12 o'clock position) for clockwise flow
+                    circumference: 360 // Full circle for complete rotation
+                }
+            });
+
+            // Initial animation to simulate clockwise flowing blue color
+            setTimeout(() => {
+                chart.data.datasets[0].data = [data, 20 - data];
+                chart.update({
+                    duration: 4000,
+                    easing: 'linear' // Linear easing for consistent clockwise flow
+                });
+            }, 100); // Small delay to ensure chart is rendered before animation
+
+            return chart; // Return the chart instance to store in window.pieCharts
+        }
+
+        // Initialize pie charts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial creation of pie charts
+            window.pieCharts = [
+                createPieChart('englishChart', 'English', 20, 'English'), // Average of 15, 16, 17
+                createPieChart('kannadaChart', 'Kannada', 15, 'Kannada'), // Average of 15, 14, 15
+                createPieChart('hindiChart', 'Hindi', 16, 'Hindi'), // Average of 15, 16, 16
+                createPieChart('mathChart', 'Mathematics', 18, 'Mathematics'), // Average of 17, 18, 19
+                createPieChart('scienceChart', 'Science', 13, 'Science'), // Average of 12, 13, 14
+                createPieChart('socialChart', 'Social Science', 15, 'Social Science') // Average of 14, 15, 16
+            ];
+        });
+    </script>
+</body>
+</html>

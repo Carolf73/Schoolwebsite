@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            
+        }
+
+        .header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+            height: 80%;
+        }
+
+        .fee-card {
+            background-color: #1a73e8;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .fee-card div {
+            flex: 1;
+        }
+
+        .info-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .info-card h3 {
+            color: #1a73e8;
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+
+        .payment-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        .payment-info:last-child {
+            border-bottom: none;
+        }
+
+        .payment-info span {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .check-mark {
+            color: #4CAF50;
+            font-size: 18px;
+        }
+
+        .reprocess-button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .reprocess-button:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">Fee Payment</div>
+            <div class="header-icons">
+                <button class="help-btn">?</button>
+                <button class="rupee-btn">₹</button>
+            </div>
+        </div>
+    
+        <div class="content">
+            <div class="fee-card">
+                <div>
+                    <p>Fee Pending</p>
+                    <h2>₹0.00</h2>
+                </div>
+                <div>
+                    <p>Total Fee Amount</p>
+                    <h2>₹28000.00</h2>
+                    <p>Paid Amount</p>
+                    <h2>₹28000.00</h2>
+                </div>
+            </div>
+    
+            <div class="info-card">
+                <h3>Name : CHRIS FERNANDES</h3>
+                <h3>Admission No. : 2271</h3>
+                <h3>Class & Section : X B</h3>
+            </div>
+    
+            <div class="info-card">
+                <h3>Fee Paid Info</h3>
+                <div class="payment-info">
+                    <span>Amount Paid: ₹18000.00</span>
+                    <span>Receipt No.: 0302</span>
+                    <span>Payment Mode: ONLINE</span>
+                    <span class="check-mark">✔</span>
+                </div>
+                <div class="payment-info">
+                    <span>Amount Paid: ₹10000.00</span>
+                    <span>Receipt No.: 2418</span>
+                    <span>Payment Mode: DD</span>
+                    <span class="check-mark">✔</span>
+                </div>
+            </div>
+    
+            <button class="reprocess-button">Click Here For Payment Reprocess</button>
+        </div>
+
+    </div>
+    
+</body>
+</html>
